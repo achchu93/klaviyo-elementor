@@ -16,3 +16,8 @@
 if ( ! defined( 'ABSPATH' ) || ! defined( 'ELEMENTOR_PRO__FILE__' ) ) {
 	exit; // Exit if accessed directly or Elementor Pro not activated
 }
+
+define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__);
+define( 'KLAVIYO_DOMAIN', 'klaviyo-elementor' );
+
+include_once "includes/class-klaviyo-elementor.php";
