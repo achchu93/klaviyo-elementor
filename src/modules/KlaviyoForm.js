@@ -28,7 +28,7 @@ export default IntegrationBase.extend({
 			controls: [controlView.getControlValue()]
 		});
 
-		self.getMailchimpCache('lists', 'lists', cacheKey).done(function (data) {
+		self.getKlaviyoCache('lists', 'lists', cacheKey).done(function (data) {
 			self.updateOptions('klaviyo_list', data);
 		});
 	},
