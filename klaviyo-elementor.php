@@ -13,11 +13,16 @@
  * Domain Path:       /languages
  */
 
-if ( ! defined( 'ABSPATH' ) || ! defined( 'ELEMENTOR_PRO__FILE__' ) ) {
-	exit; // Exit if accessed directly or Elementor Pro not activated
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
 }
 
-define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__);
+$dep = "elementor-pro/elementor-pro.php";
+if ( ! in_array( $dep, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+	return;
+}
+
+	define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__);
 define( 'KLAVIYO_DOMAIN', 'klaviyo-elementor' );
 
 include_once "includes/class-klaviyo-elementor.php";

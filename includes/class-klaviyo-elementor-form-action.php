@@ -4,6 +4,10 @@ use \ElementorPro\Modules\Forms\Classes\Integration_Base;
 use \Elementor\Controls_Manager;
 use ElementorPro\Modules\Forms\Controls\Fields_Map;
 
+if ( ! defined( 'ABSPATH' )  ) {
+	exit; // Exit if accessed directly
+}
+
 class Klaviyo_Elementor_Form_Action extends Integration_Base{
 
 	/**
