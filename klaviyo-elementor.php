@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Klaviyo for Elementor
  * Plugin URI:        #
- * Description:       An extension for the Dynamics 365 CRM
+ * Description:       Elementor Pro extension for klaviyo form action
  * Version:           0.1
  * Requires PHP:      5.6
  * Author:            Ahamed Arshad
