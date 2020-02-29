@@ -6,16 +6,6 @@ use ElementorPro\Modules\Forms\Controls\Fields_Map;
 
 class Klaviyo_Elementor_Form_Action extends Integration_Base{
 
-
-	/**
-	 * Klaviyo_Elementor_Form_Action constructor.
-	 */
-	public function __construct() {
-		
-		add_action('elementor_pro/forms/process', [$this, 'process_fields']);
-		
-	}
-
 	/**
 	 * Action slug
 	 * @return string
@@ -38,7 +28,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 	 */
 	public function register_settings_section( $widget ) {
 		$widget->start_controls_section(
-			'section_klaviyo',
+			'section_klaviyo-elementor',
 			[
 				'label' => __( 'Klaviyo', KLAVIYO_DOMAIN ),
 				'condition' => [
@@ -103,10 +93,51 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 	}
 
 	/**
-	 * @inheritDoc
+	 * @var \ElementorPro\Modules\Forms\Classes\Form_Record $record
+	 * @var \ElementorPro\Modules\Forms\Classes\Ajax_Handler $ajax_handler
 	 */
 	public function run( $record, $ajax_handler ) {
+		$settings = $record->get( 'form_settings' );
+		$list     = $settings['klaviyo_list'];
+		$api_key  = $settings['klaviyo_api_key'];
+		$fields   = $record->get( 'fields' );
 
+		try{
+
+			if( empty( $api_key ) ){
+				throw new Exception( "Api key is required" );
+			}
+
+			if( empty( $list ) ){
+				throw new Exception( "List is required" );
+			}
+
+			$response = wp_remote_post(
+				"https://a.klaviyo.com/api/v2/list/$list/members",
+				[
+					'headers' => [
+						'content-type' => 'application/json'
+					],
+					'body' => json_encode([
+						'api_key'  => $api_key,
+						'profiles' => [
+							[
+								'email' => is_array( $fields['email'] ) ? $fields['email']['value'] : $fields['email']->value
+							]
+						]
+					])
+				]
+			);
+
+			if( is_wp_error($response) ){
+				throw new Exception( $response->get_error_message(), $response->get_error_code() );
+			}
+
+			$ajax_handler->add_success_message( "Success!" );
+
+		}catch (\Exception $exception){
+			$ajax_handler->add_admin_error_message( 'Klaviyo: ' . $exception->getMessage() );
+		}
 	}
 
 	/**
