@@ -116,25 +116,21 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 				throw new Exception( "List is required" );
 			}
 
-			$response = wp_remote_post(
-				"https://a.klaviyo.com/api/v2/list/$list/members",
+			$list_api = new Klaviyo_List_API($api_key);
+			$response = $list_api->add_to_list(
+				$list,
 				[
-					'headers' => [
-						'content-type' => 'application/json'
-					],
-					'body' => json_encode([
-						'api_key'  => $api_key,
-						'profiles' => [
-							[
-								'email' => is_array( $fields['email'] ) ? $fields['email']['value'] : $fields['email']->value
-							]
+					'api_key'  => $api_key,
+					'profiles' => [
+						[
+							'email' => is_array( $fields['email'] ) ? $fields['email']['value'] : $fields['email']->value
 						]
-					])
+					]
 				]
 			);
 
-			if( is_wp_error($response) ){
-				throw new Exception( $response->get_error_message(), $response->get_error_code() );
+			if( !$response['success'] ){
+				throw new Exception( $response['message'], $response['code'] );
 			}
 
 			$ajax_handler->add_success_message( "Success!" );
@@ -159,21 +155,16 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			throw new \Exception( '`api_key` is required', 400 );
 		}
 
-		$response = wp_remote_get( 'https://a.klaviyo.com/api/v2/lists?api_key=' . $key );
-
-		if(is_wp_error($response)){
-			throw new \Exception( $response->get_error_message(), $response->get_error_code() );
-		}
-
-		$results = json_decode( wp_remote_retrieve_body( $response ) );
+		$lists_api = new Klaviyo_List_API( $key );
+		$lists     = $lists_api->get_lists();
 
 		$data = [
 			'' => 'Select list...'
 		];
 
-		if( is_array($results) && count($results) ){
-			foreach ($results as $result){
-				$data[ $result->list_id ] = $result->list_name;
+		if( $lists['success'] && count($lists['data']) ){
+			foreach ($lists['data'] as $list){
+				$data[ $list->list_id ] = $list->list_name;
 			}
 		}
 

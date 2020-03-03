@@ -13,8 +13,15 @@ class KlaviyoElementor{
 	 */
 	public function __construct()
 	{
+		$this->includes();
 		$this->hooks();
 
+	}
+
+	public function includes()
+	{
+		include_once "api/class-klaviyo-api-base.php";
+		include_once "api/class-klaviyo-list-api.php";
 	}
 
 	/**
