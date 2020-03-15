@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' )  ) {
 
 class Klaviyo_Elementor_Form_Action extends Integration_Base{
 
-	const OPTION_NAME_API_KEY = 'klaviyo_global_api_key';
+	const OPTION_NAME_API_KEY = 'pro_klaviyo_global_api_key';
 
 	/**
 	 * Klaviyo_Elementor_Form_Action constructor.
@@ -114,6 +114,11 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 							'name' => 'klaviyo_api_key',
 							'operator' => '!==',
 							'value' => '',
+						],
+						[
+							'name' => 'klaviyo_api_key_source',
+							'operator' => '=',
+							'value' => 'default',
 						]
 					]
 				],
@@ -151,10 +156,17 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 	 * @var \ElementorPro\Modules\Forms\Classes\Ajax_Handler $ajax_handler
 	 */
 	public function run( $record, $ajax_handler ) {
+
+
 		$settings = $record->get( 'form_settings' );
 		$list     = $settings['klaviyo_list'];
-		$api_key  = $settings['klaviyo_api_key'];
 		$fields   = $record->get( 'fields' );
+
+		if ( 'default' === $settings['klaviyo_api_key_source'] ) {
+			$api_key = $this->get_global_api_key();
+		} else {
+			$api_key = $settings['klaviyo_api_key'];
+		}
 
 		try{
 
@@ -199,7 +211,11 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 
 	public function handle_panel_request( array $data ) {
 
-		$key = $data['api_key'];
+		if ( ! empty( $data['use_global_api_key'] ) && 'default' === $data['use_global_api_key'] ) {
+			$key = $this->get_global_api_key();
+		} elseif ( ! empty( $data['api_key'] ) ) {
+			$key = $data['api_key'];
+		}
 
 		if ( empty( $key ) ) {
 			throw new \Exception( '`api_key` is required', 400 );
@@ -209,12 +225,14 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 		$lists     = $lists_api->get_lists();
 
 		$data = [
-			'' => 'Select list...'
+			'lists' => [
+				'' => 'Select list...'
+			]
 		];
 
-		if( $lists['success'] && count($lists['data']) ){
+		if( $lists['success'] && is_array($lists['data']) && count($lists['data']) ){
 			foreach ($lists['data'] as $list){
-				$data[ $list->list_id ] = $list->list_name;
+				$data['lists'][ $list->list_id ] = $list->list_name;
 			}
 		}
 
@@ -242,7 +260,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 				'validate_api_data' => [
 					'field_args' => [
 						'type' => 'raw_html',
-						'html' => sprintf( '<button data-action="%s" data-nonce="%s" class="button elementor-button-spinner" id="elementor_klaviyo_global_api_key_button">%s</button>', self::OPTION_NAME_API_KEY . '_validate', wp_create_nonce( self::OPTION_NAME_API_KEY ), __( 'Validate API Key', KLAVIYO_DOMAIN ) ),
+						'html' => sprintf( '<button data-action="%s" data-nonce="%s" class="button elementor-button-spinner" id="elementor_pro_klaviyo_global_api_key_button">%s</button>', self::OPTION_NAME_API_KEY . '_validate', wp_create_nonce( self::OPTION_NAME_API_KEY ), __( 'Validate API Key', KLAVIYO_DOMAIN ) ),
 					],
 				],
 			],
@@ -260,13 +278,14 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 		try {
 			$list_api  = new Klaviyo_List_API( $_POST['api_key'] );
 			$list      = $list_api->get_lists();
-			error_log( json_encode( $list ) );
 
-			if( !$list['success'] )
-				throw new Exception();
+			if( !$list['success'] || !is_array($list['data']) ){
+				$message =  is_object($list['data']) && property_exists($list['data'], "message") ? $list['data']->message : __( "An error occurred" );
+				throw new Exception( $message );
+			}
 
 		} catch ( \Exception $exception ) {
-			wp_send_json_error();
+			wp_send_json_error( $exception->getMessage() );
 		}
 		wp_send_json_success();
 	}

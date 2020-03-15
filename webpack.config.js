@@ -28,7 +28,14 @@ const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
-
+	entry: {
+		editor: "./src/editor/index.js",
+		admin: "./src/admin/index.js"
+	},
+	output: {
+		filename: '[name].min.js',
+		path: __dirname + '/dist'
+	},
 	plugins: [
 		new webpack.ProgressPlugin()
 	],
@@ -37,7 +44,6 @@ module.exports = {
 		rules: [
 			{
 				test: /.(js|jsx)$/,
-				include: [],
 				loader: 'babel-loader'
 			}
 		]

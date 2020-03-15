@@ -31,6 +31,10 @@ class KlaviyoElementor{
 	{
 	    add_action( 'elementor_pro/init', [ $this, 'init_modules' ] );
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue_editor_scripts' ], 9999 );
+
+		if( is_admin() ){
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ], 9999 );
+		}
 	}
 
 	/**
@@ -51,11 +55,24 @@ class KlaviyoElementor{
 	{
 		wp_enqueue_script(
 			'klaviyo-elementor',
-			plugins_url('dist/main.js', KLAVIYO_ELEMENTOR_FILE),
+			plugins_url('dist/editor.min.js', KLAVIYO_ELEMENTOR_FILE),
 			[
 				'backbone-marionette',
 				'elementor-common-modules',
 				'elementor-editor-modules',
+			],
+			"1.0",
+			true
+		);
+	}
+
+	public function enqueue_admin_scripts()
+	{
+		wp_enqueue_script(
+			'klaviyo-elementor-admin',
+			plugins_url('dist/admin.min.js', KLAVIYO_ELEMENTOR_FILE),
+			[
+				'elementor-common'
 			],
 			"1.0",
 			true

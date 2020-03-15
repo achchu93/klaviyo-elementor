@@ -7,16 +7,17 @@ export default IntegrationBase.extend({
 	},
 
 	onElementChange(setting) {
-		if(setting === 'klaviyo_api_key'){
+		if( ["klaviyo_api_key_source", "klaviyo_api_key"].includes(setting) ){
 			this.onApiUpdate();
 		}
 	},
 
 	onApiUpdate() {
 		var self = this,
-			controlView = self.getEditorControlView('klaviyo_api_key');
+			controlView = self.getEditorControlView('klaviyo_api_key'),
+			globalControlView = self.getEditorControlView('klaviyo_api_key_source');
 
-		if ('' === controlView.getControlValue()) {
+		if ('default' !== globalControlView.getControlValue() && '' === controlView.getControlValue()) {
 			self.updateOptions('klaviyo_list', []);
 			self.getEditorControlView('klaviyo_list').setValue('');
 			return;
@@ -25,11 +26,11 @@ export default IntegrationBase.extend({
 		self.addControlSpinner('klaviyo_list');
 		var cacheKey = this.getCacheKey({
 			type: 'lists',
-			controls: [controlView.getControlValue()]
+			controls: [controlView.getControlValue(), globalControlView.getControlValue()]
 		});
 
 		self.getKlaviyoCache('lists', 'lists', cacheKey).done(function (data) {
-			self.updateOptions('klaviyo_list', data);
+			self.updateOptions('klaviyo_list', data.lists);
 		});
 	},
 
@@ -44,6 +45,7 @@ export default IntegrationBase.extend({
 			service: 'klaviyo-elementor',
 			klaviyo_action: action,
 			api_key: this.getEditorControlView('klaviyo_api_key').getControlValue(),
+			use_global_api_key: this.getEditorControlView('klaviyo_api_key_source').getControlValue()
 		});
 
 		return this.fetchCache(type, cacheKey, requestArgs);
