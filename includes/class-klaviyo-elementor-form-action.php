@@ -3,7 +3,6 @@
 use \Elementor\Settings;
 use \ElementorPro\Modules\Forms\Classes\Integration_Base;
 use \Elementor\Controls_Manager;
-use ElementorPro\Modules\Forms\Classes\Mailchimp_Handler;
 use \ElementorPro\Modules\Forms\Controls\Fields_Map;
 
 if ( ! defined( 'ABSPATH' )  ) {
