@@ -177,16 +177,16 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 				throw new Exception( "List is required" );
 			}
 
+			if( count( array_diff( [ "email", "phone_number" ], array_keys( $fields ) ) ) > 1 ){
+				throw new Exception( "Email or Phone Number Field is required" );
+			}
+
 			$list_api = new Klaviyo_List_API($api_key);
 			$response = $list_api->add_to_list(
 				$list,
 				[
 					'api_key'  => $api_key,
-					'profiles' => [
-						[
-							'email' => is_array( $fields['email'] ) ? $fields['email']['value'] : $fields['email']->value
-						]
-					]
+					'profiles' => [ $this->get_mapped_fields($fields) ]
 				]
 			);
 
@@ -287,5 +287,20 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			wp_send_json_error( $exception->getMessage() );
 		}
 		wp_send_json_success();
+	}
+
+	/**
+	 * @param $fields
+	 *
+	 * @return array
+	 */
+	private function get_mapped_fields($fields)
+	{
+		$map_fields = [];
+		foreach ( $fields as $name => $field ){
+			$map_fields[ $name ] = $field["value"];
+		}
+
+		return $map_fields;
 	}
 }

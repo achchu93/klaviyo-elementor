@@ -37,7 +37,7 @@ class Klaviyo_Api_Base {
 					'content-type' => 'application/json',
 					'api-key'      => $this->api_key
 				],
-				'body'    => json_encode($data)
+				'body'    => $data
 			]
 		);
 
@@ -52,7 +52,7 @@ class Klaviyo_Api_Base {
 	public function parse_request_data($request)
 	{
 
-		if( is_wp_error($request) )
+		if( is_wp_error($request) || wp_remote_retrieve_response_code($request) !== 200 )
 		{
 			return $this->parse_error_request_data($request);
 		}
@@ -62,16 +62,23 @@ class Klaviyo_Api_Base {
 	}
 
 	/**
-	 * @param WP_Error $error
+	 * @param WP_Error|array $error
 	 *
 	 * @return array
 	 */
 	public function parse_error_request_data($error)
 	{
+		$message = wp_remote_retrieve_response_message( $error );
+
+		if( is_array($error) && !empty($error["body"]) ){
+			$object = json_decode( $error["body"] );
+			$message = is_object( $object ) && property_exists( $object, "detail" ) ? $object->detail : $message;
+		}
+
 		return [
 			'success' => false,
-			'message' => $error->get_error_message(),
-			'code'    => $error->get_error_code()
+			'message' => $message,
+			'code'    => wp_remote_retrieve_response_code($error)
 		];
 	}
 

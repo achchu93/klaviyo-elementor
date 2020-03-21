@@ -30,10 +30,11 @@ class KlaviyoElementor{
 	public function hooks()
 	{
 	    add_action( 'elementor_pro/init', [ $this, 'init_modules' ] );
-		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue_editor_scripts' ], 9999 );
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue_editor_scripts' ], 99 );
+		add_action( 'http_api_curl', [ $this, 'parse_data_to_json' ], 99, 3 );
 
 		if( is_admin() ){
-			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ], 9999 );
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ], 99 );
 		}
 	}
 
@@ -77,6 +78,14 @@ class KlaviyoElementor{
 			"1.0",
 			true
 		);
+	}
+
+	public function parse_data_to_json($handle, $data, $url)
+	{
+		$url = parse_url( $url );
+		if( $url && !empty($url["host"]) && $url["host"] === "a.klaviyo.com" ){
+			curl_setopt($handle, CURLOPT_POSTFIELDS, json_encode($data["body"]));
+		}
 	}
 }
 
