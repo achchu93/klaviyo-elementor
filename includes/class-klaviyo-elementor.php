@@ -4,7 +4,11 @@ if ( ! defined( 'ABSPATH' )  ) {
 	exit; // Exit if accessed directly
 }
 
-
+/**
+ * Main Klaviyotor Class
+ *
+ * @class KlaviyoElementor
+ */
 class KlaviyoElementor{
 
 
@@ -18,6 +22,9 @@ class KlaviyoElementor{
 
 	}
 
+	/**
+	 * Includes api files
+	 */
 	public function includes()
 	{
 		include_once "api/class-klaviyo-api-base.php";
@@ -67,6 +74,9 @@ class KlaviyoElementor{
 		);
 	}
 
+	/**
+	 * Enqueue admin scripts
+	 */
 	public function enqueue_admin_scripts()
 	{
 		wp_enqueue_script(
@@ -80,6 +90,13 @@ class KlaviyoElementor{
 		);
 	}
 
+	/**
+	 * Parsing data to JSON as Klaviyo process only JSON data
+	 *
+	 * @param $handle
+	 * @param $data
+	 * @param $url
+	 */
 	public function parse_data_to_json($handle, $data, $url)
 	{
 		$url = parse_url( $url );

@@ -4,9 +4,25 @@ if ( ! defined( 'ABSPATH' )  ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Klaviyo List API
+ *
+ * @class Klaviyo_List_API
+ */
 class Klaviyo_List_API extends Klaviyo_Api_Base {
 
+	/**
+	 * API Version
+	 *
+	 * @var string
+	 */
 	protected $version  = 'v2/';
+
+	/**
+	 * API Route
+	 *
+	 * @var string
+	 */
 	protected $route    = 'list';
 
 	/**

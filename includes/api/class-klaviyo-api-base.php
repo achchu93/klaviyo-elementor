@@ -4,12 +4,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Klaviyo API Base Class
+ *
+ * @class Klaviyo_Api_Base
+ */
 class Klaviyo_Api_Base {
 
+	/**
+	 * Base URL
+	 *
+	 * @var string
+	 */
 	protected $base_url = 'https://a.klaviyo.com/api/';
+
+	/**
+	 * API Version
+	 *
+	 * @var string
+	 */
 	protected $version  = 'v1/';
+
+	/**
+	 * API Route
+	 *
+	 * @var string
+	 */
 	protected $route    = '';
 
+	/**
+	 * API key
+	 *
+	 * @var string
+	 */
 	private $api_key  = '';
 
 	/**
@@ -25,6 +52,16 @@ class Klaviyo_Api_Base {
 		$this->api_key   = $api_key;
 	}
 
+
+	/**
+	 * API Request
+	 *
+	 * @param string $url
+	 * @param string $method
+	 * @param array $data
+	 *
+	 * @return array
+	 */
 	public function request( $url = '', $method = 'GET', $data = [] )
 	{
 		$url = ! empty( $url ) ? $url : $this->get_base_url();
@@ -45,6 +82,8 @@ class Klaviyo_Api_Base {
 	}
 
 	/**
+	 * Parse response data
+	 *
 	 * @param $request
 	 *
 	 * @return array
@@ -62,6 +101,8 @@ class Klaviyo_Api_Base {
 	}
 
 	/**
+	 * Parse error response data
+	 *
 	 * @param WP_Error|array $error
 	 *
 	 * @return array
@@ -83,6 +124,8 @@ class Klaviyo_Api_Base {
 	}
 
 	/**
+	 * Parse success response data
+	 *
 	 * @param array $success
 	 *
 	 * @return array
@@ -96,7 +139,7 @@ class Klaviyo_Api_Base {
 	}
 
 	/**
-	 * Get current route url
+	 * Get base route url
 	 *
 	 * @return string
 	 */
