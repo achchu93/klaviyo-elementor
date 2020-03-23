@@ -4,7 +4,8 @@
   "description": "Klaviyo integration for Elementor Pro Forms",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "dev": "cross-env WEBPACK_ENV=development webpack --progress --colors --watch --hide-modules",
+    "build": "cross-env WEBPACK_ENV=production webpack"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "@webpack-cli/init": "^0.2.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "cross-env": "^7.0.2",
     "terser-webpack-plugin": "^2.3.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",

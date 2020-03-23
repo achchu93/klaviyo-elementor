@@ -1,15 +1,10 @@
 <?php
 
-use \Elementor\Settings;
-use \ElementorPro\Modules\Forms\Classes\Integration_Base;
-use \Elementor\Controls_Manager;
-use \ElementorPro\Modules\Forms\Controls\Fields_Map;
-
 if ( ! defined( 'ABSPATH' )  ) {
 	exit; // Exit if accessed directly
 }
 
-class Klaviyo_Elementor_Form_Action extends Integration_Base{
+class Klaviyo_Elementor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integration_Base{
 
 	const OPTION_NAME_API_KEY = 'pro_klaviyo_global_api_key';
 
@@ -18,7 +13,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
-			add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 14 );
+			add_action( 'elementor/admin/after_create_settings/' . \Elementor\Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 14 );
 		}
 		add_action( 'wp_ajax_' . self::OPTION_NAME_API_KEY . '_validate', [ $this, 'ajax_validate_api_token' ] );
 	}
@@ -77,7 +72,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			'klaviyo_api_key_source',
 			[
 				'label' => __( 'API Key', 'elementor-pro' ),
-				'type' => Controls_Manager::SELECT,
+				'type' => \Elementor\Controls_Manager::SELECT,
 				'label_block' => false,
 				'options' => [
 					'default' => 'Default',
@@ -91,7 +86,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			'klaviyo_api_key',
 			[
 				'label' => __( 'Custom API Key', KLAVIYO_DOMAIN ),
-				'type' => Controls_Manager::TEXT,
+				'type' => \Elementor\Controls_Manager::TEXT,
 				'description' => __( 'Use this field to set a custom API Key for the current form', KLAVIYO_DOMAIN ),
 				'condition' => [
 					'klaviyo_api_key_source' => 'custom',
@@ -103,7 +98,7 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			'klaviyo_list',
 			[
 				'label' => __( 'Audience', KLAVIYO_DOMAIN ),
-				'type' => Controls_Manager::SELECT,
+				'type' => \Elementor\Controls_Manager::SELECT,
 				'options' => [],
 				'render_type' => 'none',
 				'conditions' => [
@@ -128,16 +123,16 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 			'klaviyo_fields_map',
 			[
 				'label' => __( 'Field Mapping', 'elementor-pro' ),
-				'type' => Fields_Map::CONTROL_TYPE,
+				'type' => \ElementorPro\Modules\Forms\Controls\Fields_Map::CONTROL_TYPE,
 				'separator' => 'before',
 				'fields' => [
 					[
 						'name' => 'remote_id',
-						'type' => Controls_Manager::HIDDEN,
+						'type' => \Elementor\Controls_Manager::HIDDEN,
 					],
 					[
 						'name' => 'local_id',
-						'type' => Controls_Manager::SELECT,
+						'type' => \Elementor\Controls_Manager::SELECT,
 					],
 				],
 				'condition' => [
@@ -202,10 +197,10 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 	}
 
 	/**
-	 * @inheritDoc
+	 * Export Elements
 	 */
 	public function on_export( $element ) {
-
+		return $element;
 	}
 
 	public function handle_panel_request( array $data ) {
@@ -240,11 +235,11 @@ class Klaviyo_Elementor_Form_Action extends Integration_Base{
 
 	/**
 	 * Register global settings
-	 * @param Settings $settings
+	 * @param \Elementor\Settings $settings
 	 */
 	public function register_admin_fields($settings)
 	{
-		$settings->add_section( Settings::TAB_INTEGRATIONS, 'klaviyo-elementor', [
+		$settings->add_section( \Elementor\Settings::TAB_INTEGRATIONS, 'klaviyo-elementor', [
 			'callback' => function() {
 				echo '<hr><h2>' . esc_html__( 'Klaviyo', KLAVIYO_DOMAIN ) . '</h2>';
 			},

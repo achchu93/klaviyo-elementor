@@ -27,7 +27,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-	mode: 'development',
+	mode: process.env.WEBPACK_ENV,
 	entry: {
 		editor: "./src/editor/index.js",
 		admin: "./src/admin/index.js"
