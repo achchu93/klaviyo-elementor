@@ -4,12 +4,15 @@ if ( ! defined( 'ABSPATH' )  ) {
 	exit; // Exit if accessed directly
 }
 
-class Klaviyotor_Add_To_List_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integration_Base{
+/**
+ * @Class Klaviyotor_Form_Action
+ */
+class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integration_Base{
 
 	const OPTION_NAME_API_KEY = 'pro_klaviyo_global_api_key';
 
 	/**
-	 * Klaviyotor_Add_To_List_Form_Action constructor.
+	 * section_klaviyotor constructor.
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
@@ -32,7 +35,7 @@ class Klaviyotor_Add_To_List_Form_Action extends \ElementorPro\Modules\Forms\Cla
 	 * @return string
 	 */
 	public function get_name() {
-		return 'klaviyotor_add_to_list';
+		return 'klaviyotor';
 	}
 
 	/**
@@ -40,7 +43,7 @@ class Klaviyotor_Add_To_List_Form_Action extends \ElementorPro\Modules\Forms\Cla
 	 * @return string
 	 */
 	public function get_label() {
-		return __( 'Klaviyo Add to List', KLAVIYO_DOMAIN );
+		return __( 'Klaviyotor', KLAVIYO_DOMAIN );
 	}
 
 	/**
@@ -49,9 +52,9 @@ class Klaviyotor_Add_To_List_Form_Action extends \ElementorPro\Modules\Forms\Cla
 	 */
 	public function register_settings_section( $widget ) {
 		$widget->start_controls_section(
-			'section_klaviyotor_add_to_list',
+			'section_klaviyotor',
 			[
-				'label' => __( 'Klaviyo Add to List', KLAVIYO_DOMAIN ),
+				'label' => __( $this->get_label(), KLAVIYO_DOMAIN ),
 				'condition' => [
 					'submit_actions' => $this->get_name(),
 				],

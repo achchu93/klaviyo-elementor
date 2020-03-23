@@ -50,9 +50,9 @@ class Klaviyotor{
 	 */
 	public function init_modules()
 	{
-		include_once "class-klaviyotor-add-to-list-action.php";
+		include_once "form-actions/class-klaviyotor-form-action.php";
 
-		$action = new Klaviyotor_Add_To_List_Form_Action();
+		$action = new Klaviyotor_Form_Action();
 		\ElementorPro\Plugin::instance()->modules_manager->get_modules( 'forms' )->add_form_action( $action->get_name(), $action );
 	}
 
