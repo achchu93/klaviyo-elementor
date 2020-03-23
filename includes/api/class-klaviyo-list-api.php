@@ -58,4 +58,18 @@ class Klaviyo_List_API extends Klaviyo_Api_Base {
 		return $this->request( $url, 'POST', $data );
 	}
 
+	/**
+	 * Subscribe member to a list
+	 *
+	 * @param string $list
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	public function subscribe_to_list($list, $data)
+	{
+		$url = $this->get_base_url() . "/$list/subscribe";
+		return $this->request( $url, 'POST', $data );
+	}
+
 }

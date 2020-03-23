@@ -12,7 +12,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 	const OPTION_NAME_API_KEY = 'pro_klaviyo_global_api_key';
 
 	/**
-	 * section_klaviyotor constructor.
+	 * Klaviyotor_Form_Action constructor.
 	 */
 	public function __construct() {
 		if ( is_admin() ) {
@@ -94,6 +94,20 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 				'condition' => [
 					'klaviyo_api_key_source' => 'custom',
 				]
+			]
+		);
+
+		$widget->add_control(
+			'klaviyo_action',
+			[
+				'label' => __( 'Action', KLAVIYO_DOMAIN ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'options' => [
+					'add_to_list' => 'Add to List',
+					'subscribe_to_list' => 'Subscribe to List',
+				],
+				'default' => 'add_to_list',
+				'description' => __( 'Choose the action to do with Klaviyo', KLAVIYO_DOMAIN ),
 			]
 		);
 
@@ -180,7 +194,8 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 			}
 
 			$list_api = new Klaviyo_List_API($api_key);
-			$response = $list_api->add_to_list(
+			$action = $settings['klaviyo_action'];
+			$response = $list_api->{$action}(
 				$list,
 				[
 					'api_key'  => $api_key,
