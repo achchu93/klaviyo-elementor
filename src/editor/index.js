@@ -1,16 +1,16 @@
-import KlaviyoAddToList from "./modules/KlaviyoAddToListForm";
+import KlaviyotorAddToList from "./modules/KlaviyotorAddToListForm";
 
-const KlaviyoELementor = Marionette.Application.extend({
+const Klaviyotor = Marionette.Application.extend({
 	onStart: function onStart() {
 		jQuery(window).on('elementor:init', this.onElementorInit);
 	},
 
 	onElementorInit: function onElementorInit() {
 		elementor.debug.addURLToWatch('klaviyo-elementor/dist');
-		elementorPro.modules.forms = new KlaviyoAddToList("form");
+		elementorPro.modules.forms = new KlaviyotorAddToList("form");
 	}
 });
 
-window.klaviyoELementor = new KlaviyoELementor();
+window.klaviyotor = new Klaviyotor();
 
-klaviyoELementor.start();
+klaviyotor.start();
