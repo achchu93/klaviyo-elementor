@@ -37,4 +37,4 @@ if ( ! in_array( $dep, apply_filters( 'active_plugins', get_option( 'active_plug
 define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__);
 define( 'KLAVIYO_DOMAIN', 'klaviyo-elementor' );
 
-include_once "includes/class-klaviyo-elementor.php";
+include_once "includes/class-klaviyotor.php";
