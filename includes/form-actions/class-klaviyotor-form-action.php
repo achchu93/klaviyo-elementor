@@ -43,7 +43,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 	 * @return string
 	 */
 	public function get_label() {
-		return __( 'Klaviyotor', KLAVIYO_DOMAIN );
+		return __( "Klaviyotor", "klaviyotor" );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		$widget->start_controls_section(
 			'section_klaviyotor',
 			[
-				'label' => __( $this->get_label(), KLAVIYO_DOMAIN ),
+				'label' => $this->get_label(),
 				'condition' => [
 					'submit_actions' => $this->get_name(),
 				],
@@ -64,7 +64,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		self::global_api_control(
 			$widget,
 			$this->get_global_api_key(),
-			'Klaviyo API Key',
+			__( "Klaviyo API Key", "klaviyotor" ),
 			[
 				'klaviyo_api_key_source' => 'default',
 			],
@@ -74,12 +74,12 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		$widget->add_control(
 			'klaviyo_api_key_source',
 			[
-				'label' => __( 'API Key', 'elementor-pro' ),
+				'label' => __( "API Key", "klaviyotor" ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'label_block' => false,
 				'options' => [
-					'default' => 'Default',
-					'custom' => 'Custom',
+					'default' => __( "Default", "klaviyotor" ),
+					'custom' => __( "Custom", "klaviyotor" ),
 				],
 				'default' => 'default',
 			]
@@ -88,9 +88,9 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		$widget->add_control(
 			'klaviyo_api_key',
 			[
-				'label' => __( 'Custom API Key', KLAVIYO_DOMAIN ),
+				'label' => __( "Custom API Key", "klaviyotor" ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'description' => __( 'Use this field to set a custom API Key for the current form', KLAVIYO_DOMAIN ),
+				'description' => __( "Use this field to set a custom API Key for the current form", "klaviyotor" ),
 				'condition' => [
 					'klaviyo_api_key_source' => 'custom',
 				]
@@ -100,21 +100,21 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		$widget->add_control(
 			'klaviyo_action',
 			[
-				'label' => __( 'Action', KLAVIYO_DOMAIN ),
+				'label' => __( "Action", "klaviyotor" ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'options' => [
-					'add_to_list' => 'Add to List',
-					'subscribe_to_list' => 'Subscribe to List',
+					'add_to_list' => __( "Add to List", "klaviyotor" ),
+					'subscribe_to_list' => __( "Subscribe to List", "klaviyotor" ),
 				],
 				'default' => 'add_to_list',
-				'description' => __( 'Choose the action to do with Klaviyo', KLAVIYO_DOMAIN ),
+				'description' => __( "Choose the action to do with Klaviyo", "klaviyotor" )
 			]
 		);
 
 		$widget->add_control(
 			'klaviyo_list',
 			[
-				'label' => __( 'Audience', KLAVIYO_DOMAIN ),
+				'label' => __( "Audience", "klaviyotor" ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'options' => [],
 				'render_type' => 'none',
@@ -139,7 +139,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		$widget->add_control(
 			'klaviyo_fields_map',
 			[
-				'label' => __( 'Field Mapping', 'elementor-pro' ),
+				'label' => __( "Field Mapping", "klaviyotor" ),
 				'type' => \ElementorPro\Modules\Forms\Controls\Fields_Map::CONTROL_TYPE,
 				'separator' => 'before',
 				'fields' => [
@@ -182,15 +182,15 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		try{
 
 			if( empty( $api_key ) ){
-				throw new Exception( "Api key is required" );
+				throw new Exception( __( "Api key is required", "klaviyotor" ) );
 			}
 
 			if( empty( $list ) ){
-				throw new Exception( "List is required" );
+				throw new Exception( __( "List is required", "klaviyotor" ) );
 			}
 
 			if( count( array_diff( [ "email", "phone_number" ], array_keys( $fields ) ) ) > 1 ){
-				throw new Exception( "Email or Phone Number Field is required" );
+				throw new Exception( __( "Email or Phone Number Field is required", "klaviyotor" ) );
 			}
 
 			$list_api = new Klaviyo_List_API($api_key);
@@ -207,10 +207,10 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 				throw new Exception( $response['message'], $response['code'] );
 			}
 
-			$ajax_handler->add_success_message( "Success!" );
+			$ajax_handler->add_success_message( __( "Success!", "klaviyotor" ) );
 
 		}catch (\Exception $exception){
-			$ajax_handler->add_admin_error_message( 'Klaviyo: ' . $exception->getMessage() );
+			$ajax_handler->add_admin_error_message( sprintf( __( 'Klaviyo: %s', "klaviyotor" ), $exception->getMessage() ) );
 		}
 	}
 
@@ -230,7 +230,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 		}
 
 		if ( empty( $key ) ) {
-			throw new \Exception( '`api_key` is required', 400 );
+			throw new \Exception( __( "`api_key` is required", "klaviyotor" ), 400 );
 		}
 
 		$lists_api = new Klaviyo_List_API( $key );
@@ -238,7 +238,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 
 		$data = [
 			'lists' => [
-				'' => 'Select list...'
+				'' => __( "Select list...", "klaviyotor" )
 			]
 		];
 
@@ -259,20 +259,28 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 	{
 		$settings->add_section( \Elementor\Settings::TAB_INTEGRATIONS, 'klaviyotor', [
 			'callback' => function() {
-				echo '<hr><h2>' . esc_html__( 'Klaviyo', KLAVIYO_DOMAIN ) . '</h2>';
+				echo '<hr><h2>' . esc_html__( 'Klaviyo', "klaviyotor" ) . '</h2>';
 			},
 			'fields' => [
 				self::OPTION_NAME_API_KEY => [
-					'label' => __( 'API Key', KLAVIYO_DOMAIN ),
+					'label' => __( 'API Key', "klaviyotor" ),
 					'field_args' => [
 						'type' => 'text',
-						'desc' => sprintf( __( 'To integrate with our forms you need an <a href="%s" target="_blank">API Key</a>.', KLAVIYO_DOMAIN ), 'https://help.klaviyo.com/hc/en-us/articles/115005062267-Manage-Your-Account-s-API-Keys' ),
+						'desc' =>  sprintf(
+							'%1$s <a href="%2$s" target="_blank">%3$s</a>.',
+							__( "To integrate with our forms you need an ", "klaviyotor" ),
+							'https://help.klaviyo.com/hc/en-us/articles/115005062267-Manage-Your-Account-s-API-Keys',
+							__( "API Key", "klaviyotor" )
+						)
 					],
 				],
 				'validate_api_data' => [
 					'field_args' => [
 						'type' => 'raw_html',
-						'html' => sprintf( '<button data-action="%s" data-nonce="%s" class="button elementor-button-spinner" id="elementor_pro_klaviyo_global_api_key_button">%s</button>', self::OPTION_NAME_API_KEY . '_validate', wp_create_nonce( self::OPTION_NAME_API_KEY ), __( 'Validate API Key', KLAVIYO_DOMAIN ) ),
+						'html' => sprintf(
+							'<button data-action="%s" data-nonce="%s" class="button elementor-button-spinner" id="elementor_pro_klaviyo_global_api_key_button">%s</button>',
+							self::OPTION_NAME_API_KEY . '_validate', wp_create_nonce( self::OPTION_NAME_API_KEY ), __( 'Validate API Key', "klaviyotor" )
+						),
 					],
 				],
 			],
@@ -292,7 +300,7 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 			$list      = $list_api->get_lists();
 
 			if( !$list['success'] || !is_array($list['data']) ){
-				$message =  is_object($list['data']) && property_exists($list['data'], "message") ? $list['data']->message : __( "An error occurred" );
+				$message =  is_object($list['data']) && property_exists($list['data'], "message") ? $list['data']->message : __( "An error occurred", "klaviyotor" );
 				throw new Exception( $message );
 			}
 
