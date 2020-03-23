@@ -1,4 +1,4 @@
-import Klaviyo from "./modules/KlaviyoForm";
+import KlaviyoAddToList from "./modules/KlaviyoAddToListForm";
 
 const KlaviyoELementor = Marionette.Application.extend({
 	onStart: function onStart() {
@@ -7,7 +7,7 @@ const KlaviyoELementor = Marionette.Application.extend({
 
 	onElementorInit: function onElementorInit() {
 		elementor.debug.addURLToWatch('klaviyo-elementor/dist');
-		elementorPro.modules.forms = new Klaviyo("form");
+		elementorPro.modules.forms = new KlaviyoAddToList("form");
 	}
 });
 
