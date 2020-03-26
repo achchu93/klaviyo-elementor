@@ -3,7 +3,7 @@
  * Plugin Name:       Klaviyotor
  * Plugin URI:        #
  * Description:       Elementor Pro extension for klaviyo form action
- * Version:           0.1
+ * Version:           1.0.0
  * Requires PHP:      5.5
  * Author:            Ahamed Arshad
  * Author URI:        mailto:achchu.zats@gmail.com
