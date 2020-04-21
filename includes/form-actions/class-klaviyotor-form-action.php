@@ -319,7 +319,10 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 	{
 		$map_fields = [];
 		foreach ( $fields as $name => $field ){
-			$map_fields[ $name ] = $field["value"];
+            $sanitized_name = sanitize_title($name);
+            if ( !empty( $sanitized_name ) ) {
+                $map_fields[ $name ] = sanitize_text_field( $field["value"] );
+            }
 		}
 
 		return $map_fields;
