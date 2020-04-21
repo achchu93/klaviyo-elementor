@@ -136,6 +136,26 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 			]
 		);
 
+        $widget->add_control(
+            'klaviyo_consent',
+            [
+                'label' => __( "Consent", "klaviyotor" ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => [
+                    'web'        => 'Web',
+                    'email'      => 'Email',
+                    'sms'        => 'SMS',
+                    'directmail' => 'Direct Mail',
+                    'mobile'     => 'Mobile'
+                ],
+                'default' => 'web',
+                'description' => __( "This is a special klaviyo property. If you have no idea about this please let it be as default value of `Web`.", "klaviyotor" ),
+                'condition' => [
+                    'klaviyo_action' => 'subscribe_to_list',
+                ]
+            ]
+        );
+
 		$widget->add_control(
 			'klaviyo_fields_map',
 			[
@@ -194,13 +214,22 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 			}
 
 			$list_api = new Klaviyo_List_API($api_key);
-			$action = $settings['klaviyo_action'];
+			$action   = $settings['klaviyo_action'];
+            $body     = [
+                'api_key'  => $api_key,
+                'profiles' => [$this->get_mapped_fields($fields)]
+            ];
+
+            if ($action === 'subscribe_to_list') {
+                $body['profiles'] = array_map( function ($profile){
+                    $profile['$consent'] = ! empty( $settings['klaviyo_consent'] ) ? $settings['klaviyo_consent'] : 'web';
+                    return $profile;
+                }, $body['profiles'] );
+            }
+
 			$response = $list_api->{$action}(
 				$list,
-				[
-					'api_key'  => $api_key,
-					'profiles' => [ $this->get_mapped_fields($fields) ]
-				]
+				$body
 			);
 
 			if( !$response['success'] ){
