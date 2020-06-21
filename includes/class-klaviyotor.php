@@ -29,6 +29,9 @@ class Klaviyotor{
 	{
 		include_once "api/class-klaviyo-api-base.php";
 		include_once "api/class-klaviyo-list-api.php";
+
+		// Integrations
+		include_once "integrations/klaviyo/class-klaviyo-integration.php";
 	}
 
 	/**

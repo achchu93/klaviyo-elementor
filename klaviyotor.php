@@ -31,9 +31,12 @@ if ( version_compare( PHP_VERSION, '5.5.0', '<' ) ) {
 	return;
 }
 
+if ( !function_exists( 'is_plugin_active' ) ) {
+	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+}
+
 // Checks Elementor Pro plugin has been installed
-$dep = "elementor-pro/elementor-pro.php";
-if ( ! in_array( $dep, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+if ( !is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
 	add_action( 'admin_notices', function () {
 		printf(
 			'<div class="error notice is-dismissible"><p>%s</p></div>',
