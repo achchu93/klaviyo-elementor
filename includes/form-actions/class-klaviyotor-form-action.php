@@ -348,12 +348,34 @@ class Klaviyotor_Form_Action extends \ElementorPro\Modules\Forms\Classes\Integra
 	{
 		$map_fields = [];
 		foreach ( $fields as $name => $field ){
-            $sanitized_name = sanitize_title($name);
-            if ( !empty( $sanitized_name ) ) {
+			$name = $this->get_formatted_field_name($name);
+			
+            if ( !empty( $name ) ) {
                 $map_fields[ $name ] = sanitize_text_field( $field["value"] );
             }
 		}
 
 		return $map_fields;
+	}
+
+
+	/**
+	 * @param string name
+	 * 
+	 * @return string
+	 */
+	private function get_formatted_field_name($name)
+	{
+		$sanitized_name = sanitize_title($name);
+
+		if( strpos( $sanitized_name, '_' ) === 0 ){
+			$sanitized_name = substr_replace( $sanitized_name, '$', 0, 1 );
+
+			if( strpos( $sanitized_name, '_' ) === 1 ) {
+				$sanitized_name = str_substr_replace( $sanitized_name, '', 0, 1 );
+			}
+		}
+
+		return $sanitized_name;
 	}
 }
