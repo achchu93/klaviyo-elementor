@@ -18,32 +18,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define constants
-define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__);
+define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__ );
 
 // Checks PHP version
 if ( version_compare( PHP_VERSION, '5.5.0', '<' ) ) {
-	add_action( 'admin_notices', function () {
-		printf(
-			'<div class="error notice is-dismissible"><p>%s</p></div>',
-			__( "Klaviyotor Requires atleast PHP version of 5.5.", "klaviyotor" )
-		);
-	} );
+	add_action(
+		'admin_notices',
+		function () {
+			printf(
+				'<div class="error notice is-dismissible"><p>%s</p></div>',
+				esc_html__( 'Klaviyotor Requires atleast PHP version of 5.5', 'klaviyotor' )
+			);
+		}
+	);
 	return;
 }
 
-if ( !function_exists( 'is_plugin_active' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if ( ! function_exists( 'is_plugin_active' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
 // Checks Elementor Pro plugin has been installed
-if ( !is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
-	add_action( 'admin_notices', function () {
-		printf(
-			'<div class="error notice is-dismissible"><p>%s</p></div>',
-			__( "Klaviyotor Requires Elementor Pro plugin to be activated.", "klaviyotor" )
-		);
-	} );
+if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
+	add_action(
+		'admin_notices',
+		function () {
+			printf(
+				'<div class="error notice is-dismissible"><p>%s</p></div>',
+				esc_html__( 'Klaviyotor Requires Elementor Pro plugin to be activated.', 'klaviyotor' )
+			);
+		}
+	);
 	return;
 }
 
-include_once "includes/class-klaviyotor.php";
+require_once 'includes/class-klaviyotor.php';

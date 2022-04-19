@@ -45,8 +45,7 @@ class Klaviyo_Api_Base {
 	 * @param string $version
 	 * @param string $route
 	 */
-	public function __construct( $version, $route, $api_key )
-	{
+	public function __construct( $version, $route, $api_key ) {
 		$this->version   = $version;
 		$this->route     = $route;
 		$this->api_key   = $api_key;
@@ -62,8 +61,7 @@ class Klaviyo_Api_Base {
 	 *
 	 * @return array
 	 */
-	public function request( $url = '', $method = 'GET', $data = [] )
-	{
+	public function request( $url = '', $method = 'GET', $data = [] ) {
 		$url = ! empty( $url ) ? $url : $this->get_base_url();
 
 		$request = wp_remote_request(
@@ -78,7 +76,7 @@ class Klaviyo_Api_Base {
 			]
 		);
 
-		return $this->parse_request_data($request);
+		return $this->parse_request_data( $request );
 	}
 
 	/**
@@ -88,12 +86,11 @@ class Klaviyo_Api_Base {
 	 *
 	 * @return array
 	 */
-	public function parse_request_data($request)
-	{
+	public function parse_request_data( $request ) {
 
-		if( is_wp_error($request) || wp_remote_retrieve_response_code($request) !== 200 )
+		if( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) !== 200 )
 		{
-			return $this->parse_error_request_data($request);
+			return $this->parse_error_request_data( $request );
 		}
 
 		return $this->parse_success_request_data( json_decode( wp_remote_retrieve_body( $request ) ) );
@@ -107,11 +104,11 @@ class Klaviyo_Api_Base {
 	 *
 	 * @return array
 	 */
-	public function parse_error_request_data($error)
+	public function parse_error_request_data( $error )
 	{
 		$message = wp_remote_retrieve_response_message( $error );
 
-		if( is_array($error) && !empty($error["body"]) ){
+		if( is_array( $error ) && !empty( $error["body"] ) ){
 			$object = json_decode( $error["body"] );
 			$message = is_object( $object ) && property_exists( $object, "detail" ) ? $object->detail : $message;
 		}
@@ -119,7 +116,7 @@ class Klaviyo_Api_Base {
 		return [
 			'success' => false,
 			'message' => $message,
-			'code'    => wp_remote_retrieve_response_code($error)
+			'code'    => wp_remote_retrieve_response_code( $error )
 		];
 	}
 
@@ -130,7 +127,7 @@ class Klaviyo_Api_Base {
 	 *
 	 * @return array
 	 */
-	public function parse_success_request_data($success)
+	public function parse_success_request_data( $success )
 	{
 		return [
 			'success' => true,
