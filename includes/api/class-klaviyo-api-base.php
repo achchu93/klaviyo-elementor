@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base class for the Klaviyo API
+ *
+ * @package KlaviyoWP
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -23,41 +28,41 @@ class Klaviyo_Api_Base {
 	 *
 	 * @var string
 	 */
-	protected $version  = 'v1/';
+	protected $version = 'v1/';
 
 	/**
 	 * API Route
 	 *
 	 * @var string
 	 */
-	protected $route    = '';
+	protected $route = '';
 
 	/**
 	 * API key
 	 *
 	 * @var string
 	 */
-	private $api_key  = '';
+	private $api_key = '';
 
 	/**
 	 * Klaviyo_Api_Base constructor.
 	 *
-	 * @param string $version
-	 * @param string $route
+	 * @param string $version API version
+	 * @param string $route API ndpoint
+	 * @param string $api_key API Key
 	 */
 	public function __construct( $version, $route, $api_key ) {
-		$this->version   = $version;
-		$this->route     = $route;
-		$this->api_key   = $api_key;
+		$this->version = $version;
+		$this->route   = $route;
+		$this->api_key = $api_key;
 	}
-
 
 	/**
 	 * API Request
 	 *
-	 * @param string $url
-	 * @param string $method
-	 * @param array $data
+	 * @param string $url Request url
+	 * @param string $method Request method
+	 * @param array  $data Request data
 	 *
 	 * @return array
 	 */
@@ -70,9 +75,9 @@ class Klaviyo_Api_Base {
 				'method'  => $method,
 				'headers' => [
 					'content-type' => 'application/json',
-					'api-key'      => $this->api_key
+					'api-key'      => $this->api_key,
 				],
-				'body'    => $data
+				'body'    => $data,
 			]
 		);
 
@@ -82,14 +87,13 @@ class Klaviyo_Api_Base {
 	/**
 	 * Parse response data
 	 *
-	 * @param $request
+	 * @param array $request Request data
 	 *
 	 * @return array
 	 */
 	public function parse_request_data( $request ) {
 
-		if( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) !== 200 )
-		{
+		if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) !== 200 ) {
 			return $this->parse_error_request_data( $request );
 		}
 
@@ -100,38 +104,36 @@ class Klaviyo_Api_Base {
 	/**
 	 * Parse error response data
 	 *
-	 * @param WP_Error|array $error
+	 * @param WP_Error|array $error Request error data
 	 *
 	 * @return array
 	 */
-	public function parse_error_request_data( $error )
-	{
+	public function parse_error_request_data( $error ) {
 		$message = wp_remote_retrieve_response_message( $error );
 
-		if( is_array( $error ) && !empty( $error["body"] ) ){
-			$object = json_decode( $error["body"] );
-			$message = is_object( $object ) && property_exists( $object, "detail" ) ? $object->detail : $message;
+		if ( is_array( $error ) && ! empty( $error['body'] ) ) {
+			$object  = json_decode( $error['body'] );
+			$message = is_object( $object ) && property_exists( $object, 'detail' ) ? $object->detail : $message;
 		}
 
 		return [
 			'success' => false,
 			'message' => $message,
-			'code'    => wp_remote_retrieve_response_code( $error )
+			'code'    => wp_remote_retrieve_response_code( $error ),
 		];
 	}
 
 	/**
 	 * Parse success response data
 	 *
-	 * @param array $success
+	 * @param array $success Request success data
 	 *
 	 * @return array
 	 */
-	public function parse_success_request_data( $success )
-	{
+	public function parse_success_request_data( $success ) {
 		return [
 			'success' => true,
-			'data'    => $success
+			'data'    => $success,
 		];
 	}
 
@@ -140,8 +142,7 @@ class Klaviyo_Api_Base {
 	 *
 	 * @return string
 	 */
-	public function get_base_url()
-	{
+	public function get_base_url() {
 		return esc_url( $this->base_url . $this->version . $this->route );
 	}
 }

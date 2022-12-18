@@ -1,7 +1,12 @@
 <?php
+/**
+ * Plugin main class
+ *
+ * @package KlaviyoWP
+ */
 
-if ( ! defined( 'ABSPATH' )  ) {
-	exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
 }
 
 /**
@@ -28,7 +33,7 @@ class KlaviyoWP {
 		include_once 'api/class-klaviyo-api-base.php';
 		include_once 'api/class-klaviyo-list-api.php';
 
-		// Integrations
+		// Integrations.
 		include_once 'integrations/klaviyo/class-klaviyo-integration.php';
 	}
 
@@ -82,7 +87,7 @@ class KlaviyoWP {
 			'klaviyowp-admin',
 			plugins_url( 'dist/admin.min.js', KLAVIYO_WP_FILE ),
 			[
-				'elementor-common'
+				'elementor-common',
 			],
 			'1.0',
 			true
@@ -94,9 +99,9 @@ class KlaviyoWP {
 	/**
 	 * Parsing data to JSON as Klaviyo process only JSON data
 	 *
-	 * @param $handle
-	 * @param $data
-	 * @param $url
+	 * @param string $handle Curl handle
+	 * @param array  $data Data array
+	 * @param string $url Curl url
 	 */
 	public function parse_data_to_json( $handle, $data, $url ) {
 		$url = wp_parse_url( $url );

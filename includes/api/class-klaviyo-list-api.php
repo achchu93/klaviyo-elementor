@@ -1,6 +1,11 @@
 <?php
+/**
+ * Klaviyo List API
+ *
+ * @package KlaviyoWP
+ */
 
-if ( ! defined( 'ABSPATH' )  ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
@@ -16,19 +21,19 @@ class Klaviyo_List_API extends Klaviyo_Api_Base {
 	 *
 	 * @var string
 	 */
-	protected $version  = 'v2/';
+	protected $version = 'v2/';
 
 	/**
 	 * API Route
 	 *
 	 * @var string
 	 */
-	protected $route    = 'list';
+	protected $route = 'list';
 
 	/**
 	 * Klaviyo_List_API constructor.
 	 *
-	 * @param String $api_key
+	 * @param string $api_key API key
 	 */
 	public function __construct( $api_key ) {
 		parent::__construct( $this->version, $this->route, $api_key );
@@ -39,21 +44,19 @@ class Klaviyo_List_API extends Klaviyo_Api_Base {
 	 *
 	 * @return array
 	 */
-	public function get_lists()
-	{
+	public function get_lists() {
 		return $this->request( $this->get_base_url() . 's' );
 	}
 
 	/**
 	 * Add member to a list
 	 *
-	 * @param string $list
-	 * @param array $data
+	 * @param string $list List name
+	 * @param array  $data Request data
 	 *
 	 * @return array
 	 */
-	public function add_to_list($list, $data)
-	{
+	public function add_to_list( $list, $data ) {
 		$url = $this->get_base_url() . "/$list/members";
 		return $this->request( $url, 'POST', $data );
 	}
@@ -61,13 +64,12 @@ class Klaviyo_List_API extends Klaviyo_Api_Base {
 	/**
 	 * Subscribe member to a list
 	 *
-	 * @param string $list
-	 * @param array $data
+	 * @param string $list List name
+	 * @param array  $data Request data
 	 *
 	 * @return array
 	 */
-	public function subscribe_to_list($list, $data)
-	{
+	public function subscribe_to_list( $list, $data ) {
 		$url = $this->get_base_url() . "/$list/subscribe";
 		return $this->request( $url, 'POST', $data );
 	}

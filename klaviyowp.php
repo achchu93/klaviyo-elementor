@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Klaviyo WP (Klaviyotor)
+ * Plugin Name:       Klaviyo WP ( Klaviyotor )
  * Plugin URI:        http://klaviyotor.brixyt.com/
  * Description:       Formerly known as Klaviyotor. Intend to integrate kalviyo with WP Visual Builders.
  * Version:           1.1.1
@@ -11,16 +11,18 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       klaviyo-wp
  * Domain Path:       /languages
+ *
+ * @package KlaviyoWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
-// Define constants
+// Define constants.
 define( 'KLAVIYO_WP_FILE', __FILE__ );
 
-// Checks PHP version
+// Checks PHP version.
 if ( version_compare( PHP_VERSION, '7.4.0', '<' ) ) {
 	add_action(
 		'admin_notices',
@@ -38,7 +40,7 @@ if ( ! function_exists( 'is_plugin_active' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
-// Checks Elementor Pro plugin has been installed
+// Checks Elementor Pro plugin has been installed.
 if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
 	add_action(
 		'admin_notices',

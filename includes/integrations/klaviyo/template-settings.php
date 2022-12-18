@@ -1,7 +1,7 @@
 <?php
 /**
  * Template for override the Klavito settings
- * 
+ *
  * @var array $klaviyo_settings
  * @var array $response
  * @since 1.1.0
@@ -26,13 +26,13 @@
 			<label for="klaviyo_newsletter_list_id">Add a subscribe to newsletter checkbox on the checkout page</label>
 		</th>
 		<td>
-			<?php if( $response['success'] ): ?>
+			<?php if ( $response['success'] ) : ?>
 			<select name="klaviyo_newsletter_list_id" id="klaviyo_newsletter_list_id" class="regular-text">
-			<?php foreach( $response['data'] as $list ): ?>
+				<?php foreach ( $response['data'] as $list ) : ?>
 				<option value="<?php echo $list->list_id; ?>"><?php echo "{$list->list_name} ({$list->list_id})"; ?></option>
 			<?php endforeach; ?>
 			</select>
-			<?php else: ?>
+			<?php else : ?>
 			<input type="text" class="regular-text" name="klaviyo_newsletter_list_id" id="klaviyo_newsletter_list_id" placeholder="Klaviyo list ID" value="<?php echo $klaviyo_settings['klaviyo_newsletter_list_id']; ?>" />
 			<?php endif; ?>
 		</td>
@@ -51,8 +51,8 @@
 		</th>
 		<td>
 			<select name="klaviyo_newsletter_position" id="klaviyo_newsletter_position" class="regular-text">
-				<?php $position = !empty( $klaviyo_settings['klaviyo_newsletter_position'] ) ? $klaviyo_settings['klaviyo_newsletter_position'] : 'woocommerce_after_checkout_billing_form'; ?>
-				<?php foreach( $this->get_newsletter_positions() as $hook => $name ): ?>
+				<?php $position = ! empty( $klaviyo_settings['klaviyo_newsletter_position'] ) ? $klaviyo_settings['klaviyo_newsletter_position'] : 'woocommerce_after_checkout_billing_form'; ?>
+				<?php foreach ( $this->get_newsletter_positions() as $hook => $name ) : ?>
 				<option value="<?php echo $hook; ?>" <?php selected( $position, $hook, true ); ?> ><?php echo $name; ?></option>
 				<?php endforeach; ?>
 			</select>
@@ -64,7 +64,7 @@
 			<label for="klaviyo_newsletter_checked_default">Subscribe to newsletter text Position</label>
 		</th>
 		<td>
-			<?php $newsletter_checkbox_default = !empty( $klaviyo_settings['klaviyo_newsletter_checked_default'] ) ? $klaviyo_settings['klaviyo_newsletter_checked_default'] : false; ?>
+			<?php $newsletter_checkbox_default = ! empty( $klaviyo_settings['klaviyo_newsletter_checked_default'] ) ? $klaviyo_settings['klaviyo_newsletter_checked_default'] : false; ?>
 			<input type="checkbox" name="klaviyo_newsletter_checked_default" id="klaviyo_newsletter_checked_default" value="true" <?php checked( $newsletter_checkbox_default, 'true', true ); ?> >
 			<p class="description">Newsletter to be checked by default?</p>
 		</td>				
@@ -82,7 +82,7 @@
 			<label for="klaviyo_popup">Enable Klaviyo signup forms</label>
 		</th>
 		<td>
-			<input type="checkbox" name="klaviyo_popup" value="true" <?php  checked( $klaviyo_settings['klaviyo_popup'], 'true', true ); ?> />
+			<input type="checkbox" name="klaviyo_popup" value="true" <?php checked( $klaviyo_settings['klaviyo_popup'], 'true', true ); ?> />
 		</td>
 	</tr>
 </table>
