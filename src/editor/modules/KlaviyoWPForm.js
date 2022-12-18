@@ -3,7 +3,7 @@ import IntegrationBase from "./IntegrationBase.js";
 export default IntegrationBase.extend({
 
 	getName() {
-		return 'klaviyotor';
+		return 'klaviyowp';
 	},
 
 	onElementChange(setting) {
@@ -42,7 +42,7 @@ export default IntegrationBase.extend({
 		}
 
 		requestArgs = _.extend({}, requestArgs, {
-			service: 'klaviyotor',
+			service: 'klaviyowp',
 			klaviyo_action: action,
 			api_key: this.getEditorControlView('klaviyo_api_key').getControlValue(),
 			use_global_api_key: this.getEditorControlView('klaviyo_api_key_source').getControlValue()

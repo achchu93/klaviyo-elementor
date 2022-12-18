@@ -5,15 +5,15 @@ if ( ! defined( 'ABSPATH' )  ) {
 }
 
 /**
- * Main Klaviyotor Class
+ * Main KlaviyoWP Class
  *
- * @class Klaviyotor
+ * @class KlaviyoWP
  */
-class Klaviyotor {
+class KlaviyoWP {
 
 
 	/**
-	 * Klaviyotor constructor.
+	 * KlaviyoWP constructor.
 	 */
 	public function __construct() {
 		$this->includes();
@@ -49,9 +49,9 @@ class Klaviyotor {
 	 * Initializing modules
 	 */
 	public function init_modules() {
-		include_once 'form-actions/class-klaviyotor-form-action.php';
+		include_once 'form-actions/class-klaviyowp-form-action.php';
 
-		$action = new Klaviyotor_Form_Action();
+		$action = new KlaviyoWPFormAction();
 		\ElementorPro\Plugin::instance()->modules_manager->get_modules( 'forms' )->add_form_action( $action->get_name(), $action );
 	}
 
@@ -60,8 +60,8 @@ class Klaviyotor {
 	 */
 	public function enqueue_editor_scripts() {
 		wp_register_script(
-			'klaviyotor-editor',
-			plugins_url( 'dist/editor.min.js', KLAVIYO_ELEMENTOR_FILE ),
+			'klaviyowp-editor',
+			plugins_url( 'dist/editor.min.js', KLAVIYO_WP_FILE ),
 			[
 				'backbone-marionette',
 				'elementor-common-modules',
@@ -71,7 +71,7 @@ class Klaviyotor {
 			true
 		);
 
-		wp_enqueue_script( 'klaviyotor-editor' );
+		wp_enqueue_script( 'klaviyowp-editor' );
 	}
 
 	/**
@@ -79,8 +79,8 @@ class Klaviyotor {
 	 */
 	public function enqueue_admin_scripts() {
 		wp_register_script(
-			'klaviyotor-admin',
-			plugins_url( 'dist/admin.min.js', KLAVIYO_ELEMENTOR_FILE ),
+			'klaviyowp-admin',
+			plugins_url( 'dist/admin.min.js', KLAVIYO_WP_FILE ),
 			[
 				'elementor-common'
 			],
@@ -88,7 +88,7 @@ class Klaviyotor {
 			true
 		);
 
-		wp_enqueue_script( 'klaviyotor-admin' );
+		wp_enqueue_script( 'klaviyowp-admin' );
 	}
 
 	/**
@@ -106,4 +106,4 @@ class Klaviyotor {
 	}
 }
 
-new Klaviyotor();
+new KlaviyoWP();

@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name:       Klaviyotor
+ * Plugin Name:       Klaviyo WP (formerly Klaviyotor)
  * Plugin URI:        http://klaviyotor.brixyt.com/
- * Description:       Elementor Pro extension for klaviyo form action
+ * Description:       Integrate kalviyo with WP Builders
  * Version:           1.1.1
  * Requires PHP:      5.5
  * Author:            Ahamed Arshad
  * Author URI:        mailto:achchu.zats@gmail.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       klaviyotor
+ * Text Domain:       klaviyo-wp
  * Domain Path:       /languages
  */
 
@@ -18,16 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define constants
-define( 'KLAVIYO_ELEMENTOR_FILE', __FILE__ );
+define( 'KLAVIYO_WP_FILE', __FILE__ );
 
 // Checks PHP version
-if ( version_compare( PHP_VERSION, '5.5.0', '<' ) ) {
+if ( version_compare( PHP_VERSION, '7.4.0', '<' ) ) {
 	add_action(
 		'admin_notices',
 		function () {
 			printf(
 				'<div class="error notice is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Klaviyotor Requires atleast PHP version of 5.5', 'klaviyotor' )
+				esc_html__( 'Klaviyo WP Requires atleast PHP version of 7.4', 'klaviyo-wp' )
 			);
 		}
 	);
@@ -45,11 +45,11 @@ if ( ! is_plugin_active( 'elementor-pro/elementor-pro.php' ) ) {
 		function () {
 			printf(
 				'<div class="error notice is-dismissible"><p>%s</p></div>',
-				esc_html__( 'Klaviyotor Requires Elementor Pro plugin to be activated.', 'klaviyotor' )
+				esc_html__( 'Klaviyo WP Requires Elementor Pro plugin to be activated.', 'klaviyo-wp' )
 			);
 		}
 	);
 	return;
 }
 
-require_once 'includes/class-klaviyotor.php';
+require_once 'includes/class-klaviyowp.php';
