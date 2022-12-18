@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Klaviyo WP (formerly Klaviyotor)
+ * Plugin Name:       Klaviyo WP (Klaviyotor)
  * Plugin URI:        http://klaviyotor.brixyt.com/
- * Description:       Integrate kalviyo with WP Builders
+ * Description:       Formerly known as Klaviyotor. Intend to integrate kalviyo with WP Visual Builders.
  * Version:           1.1.1
  * Requires PHP:      5.5
  * Author:            Ahamed Arshad
